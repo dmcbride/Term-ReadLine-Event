@@ -1,0 +1,14 @@
+Build.PL
+Changes
+ex/AnyEvent.pl
+ex/IO-Async.pl
+ex/IO-Poll.pl
+ex/select.pl
+ignore.txt
+lib/Term/ReadLine/Event.pm
+MANIFEST			This list of files
+README
+t/00-load.t
+t/manifest.t
+t/pod-coverage.t
+t/pod.t
