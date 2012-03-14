@@ -5,33 +5,14 @@ use warnings;
 
 use Term::ReadLine;
 
-my $CSI = "\x1b[";
-print "${CSI}2J${CSI}3H";
-$|++;
-my $t = 0;
-sub tick {print STDERR "${CSI}s${CSI}1H$t s ${CSI}u";++$t}
+use File::Basename;
+use lib dirname($0) . '/lib';
+use ExampleHelpers qw(
+  initialize_completion update_time print_input
+);
 
 my $term = Term::ReadLine->new('...');
-
-my @words = qw(abase
-abased
-abasedly
-abasedness
-abasement
-abaser
-abash
-abashed
-abashedly
-abashedness
-abashless
-abashlessly);
-
-$term->Attribs()->{completion_function} = sub {
-    my ($word, $line, $pos) = @_;
-    $word ||= "";
-
-    grep /^$word/i, @words;
-};
+initialize_completion($term);
 
 # Presumably, if you're using this loop, you're also selecting on other
 # fileno's.  It is up to you to add that in to the wait callback (first
@@ -48,7 +29,7 @@ $term->event_loop(
                       while(1) {
                           select my $rout = $rvec, undef, undef, 1.0;
                           last if vec($rout, $fileno, 1);
-                          tick();
+                          update_time();
                       }
                   },
                   sub {
@@ -58,12 +39,12 @@ $term->event_loop(
                       # is used as input to the previous callback.
 
                       # We return the fileno that we will use later.
-                      $fh->fileno;
+                      shift->fileno;
                   }
                  );
 
-my $x = $term->readline('> ');
+my $input = $term->readline('> ');
 
 # No further cleanup required
 
-print STDOUT "Got: [$x] in $t s\n";
+print_input($input);

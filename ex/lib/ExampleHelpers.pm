@@ -1,4 +1,4 @@
-package Term::ReadLine::Event::ExampleHelpers;
+package ExampleHelpers;
 
 use warnings;
 use strict;
@@ -21,8 +21,8 @@ print "${CSI}2J${CSI}3H";
 my $t = 0;
 
 sub update_time {
-	++$t;
-	print STDERR "${CSI}s${CSI}1H$t s ${CSI}u";
+    ++$t;
+    print STDERR "${CSI}s${CSI}1H$t s ${CSI}u";
 }
 
 # Helper to print input with the elapsed time it took to receive the
@@ -31,39 +31,39 @@ sub update_time {
 # input.
 
 sub print_input {
-	my ($input) = @_;
-	print "Got input [$input] in $t second(s)\n";
+    my ($input) = @_;
+    print "Got input [$input] in $t second(s)\n";
 }
 
 # Set up completion for a Term::ReadLine object.
 # Completion only works if Term::ReadLine can handle individual
 # asynchronous keystrokes.
 
+my @words = qw(
+abase
+abased
+abasedly
+abasedness
+abasement
+abaser
+abash
+abashed
+abashedly
+abashedness
+abashless
+abashlessly
+);
+
 sub initialize_completion {
-	my ($term) = @_;
+    my ($term) = @_;
 
-	my @words = qw(
-		abase
-		abased
-		abasedly
-		abasedness
-		abasement
-		abaser
-		abash
-		abashed
-		abashedly
-		abashedness
-		abashless
-		abashlessly
-	);
+    $term->Attribs()->{completion_function} = sub {
+        my ($word, $line, $pos) = @_;
+        $word ||= "";
+        grep /^$word/i, @words;
+    };
 
-	$term->Attribs()->{completion_function} = sub {
-			my ($word, $line, $pos) = @_;
-			$word ||= "";
-			grep /^$word/i, @words;
-	};
-
-	return $term;
+    return $term;
 }
 
 1;

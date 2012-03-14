@@ -8,7 +8,7 @@ use Term::ReadLine 1.09;
 
 =head1 NAME
 
-Term::ReadLine::Event - The great new Term::ReadLine::Event!
+Term::ReadLine::Event - Wrappers for Term::ReadLine's new event_loop model.
 
 =head1 VERSION
 
@@ -61,9 +61,6 @@ Please report any bugs or feature requests to C<bug-term-readline-event at rt.cp
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Term-ReadLine-Event>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
 
-
-
-
 =head1 SUPPORT
 
 You can find documentation for this module with the perldoc command.
@@ -100,14 +97,14 @@ L<http://search.cpan.org/dist/Term-ReadLine-Event/>
 
 =item Paul "LeoNerd" Evans <leonerd@leonerd.org.uk>
 
-For all the examples except POE and Reflex.
+For all the examples (IO-Async, IO-Poll, select, and fixes for AnyEvent).
 
 =item Rocco Caputo <rcaputo@cpan.org>
 
 For a final patch to Term::ReadLine that helps reduce the number
 of variables that get closed upon.
 
-For the POE and Reflex examples.
+For the POE and Reflex examples, and a push to modularise the examples.
 
 =back
 

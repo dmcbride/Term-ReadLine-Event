@@ -8,7 +8,9 @@ use Term::ReadLine;
 use Reflex::Filehandle;
 use Reflex::Interval;
 
-use Term::ReadLine::Event::ExampleHelpers qw(
+use File::Basename;
+use lib dirname($0) . '/lib';
+use ExampleHelpers qw(
   initialize_completion update_time print_input
 );
 

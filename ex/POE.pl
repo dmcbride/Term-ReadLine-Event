@@ -7,7 +7,9 @@ use warnings;
 use POE;             # We're going to use POE here.
 POE::Kernel->run();  # Silence run() warning.  See POE docs.
 
-use Term::ReadLine::Event::ExampleHelpers qw(
+use File::Basename;
+use lib dirname($0) . '/lib';
+use ExampleHelpers qw(
   initialize_completion update_time print_input
 );
 

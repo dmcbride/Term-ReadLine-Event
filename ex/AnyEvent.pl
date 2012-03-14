@@ -6,34 +6,15 @@ use warnings;
 use AnyEvent;
 use Term::ReadLine;
 
-my $CSI = "\x1b[";
-print "${CSI}2J${CSI}3H";
-$|++;
+use File::Basename;
+use lib dirname($0) . '/lib';
+use ExampleHelpers qw(
+  initialize_completion update_time print_input
+);
 
-my $t = 0;
-sub tick {print STDERR "${CSI}s${CSI}1H$t s ${CSI}u";++$t}
-my $w = AE::timer (0,1,\&tick);
+my $w = AE::timer(1, 1, \&update_time);
 my $term = Term::ReadLine->new('...');
-
-my @words = qw(abase
-abased
-abasedly
-abasedness
-abasement
-abaser
-abash
-abashed
-abashedly
-abashedness
-abashless
-abashlessly);
-
-$term->Attribs()->{completion_function} = sub {
-    my ($word, $line, $pos) = @_;
-    $word ||= "";
-
-    grep /^$word/i, @words;
-};
+initialize_completion($term);
 
 # set up the event loop callbacks.
 $term->event_loop(
@@ -63,7 +44,7 @@ $term->event_loop(
                  );
 
 
-my $x = $term->readline('> ');
+my $input = $term->readline('> ');
 
 # when we're completely done, we can do this.  Note that this still does not
 # allow us to create a second T::RL, so only do this when your process
@@ -75,4 +56,4 @@ $term->event_loop(undef);
 # No further cleanup required other than letting $data->[1] go out of scope
 # and thus deregister.
 
-print "Got: [$x] in $t s\n";
+print_input($input);

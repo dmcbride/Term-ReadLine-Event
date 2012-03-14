@@ -5,34 +5,15 @@ use warnings;
 
 use IO::Poll qw( POLLIN );
 use Term::ReadLine;
+use File::Basename;
+use lib dirname($0) . '/lib';
+use ExampleHelpers qw(
+  initialize_completion update_time print_input
+);
 
-my $CSI = "\x1b[";
-print "${CSI}2J${CSI}3H";
-$|++;
-my $t = 0;
-sub tick {print STDERR "${CSI}s${CSI}1H$t s ${CSI}u";++$t}
 
 my $term = Term::ReadLine->new('...');
-
-my @words = qw(abase
-abased
-abasedly
-abasedness
-abasement
-abaser
-abash
-abashed
-abashedly
-abashedness
-abashless
-abashlessly);
-
-$term->Attribs()->{completion_function} = sub {
-    my ($word, $line, $pos) = @_;
-    $word ||= "";
-
-    grep /^$word/i, @words;
-};
+initialize_completion($term);
 
 # If you're using IO::Poll, it's presumably because you are also polling
 # other filehandles.  We thus use a global one and close on it.
@@ -52,7 +33,7 @@ $term->event_loop(
                       while(1) {
                           $poll->poll( 1.0 );
                           last if $poll->events( $fh );
-                          tick();
+                          update_time();
                       }
                   },
                   sub {
@@ -67,9 +48,9 @@ $term->event_loop(
                   }
                  );
 
-my $x = $term->readline('> ');
+my $input = $term->readline('> ');
 
 #$term->event_loop(undef);
 $poll->remove($fh);
 
-print STDOUT "Got: [$x] in $t s\n";
+print_input($input);

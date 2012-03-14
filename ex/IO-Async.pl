@@ -8,40 +8,20 @@ use IO::Async::Timer::Periodic;
 use IO::Async::Handle;
 
 use Term::ReadLine;
-
-my $CSI = "\x1b[";
-print "${CSI}2J${CSI}3H";
-$|++;
-my $t = 0;
-sub tick {print STDERR "${CSI}s${CSI}1H$t s ${CSI}u";++$t}
+use File::Basename;
+use lib dirname($0) . '/lib';
+use ExampleHelpers qw(
+  initialize_completion update_time print_input
+);
 
 my $loop = IO::Async::Loop->new;
 $loop->add( IO::Async::Timer::Periodic->new(
    interval => 1,
-   on_tick => \&tick,
+   on_tick => \&update_time,
 )->start );
 
 my $term = Term::ReadLine->new('...');
-
-my @words = qw(abase
-abased
-abasedly
-abasedness
-abasement
-abaser
-abash
-abashed
-abashedly
-abashedness
-abashless
-abashlessly);
-
-$term->Attribs()->{completion_function} = sub {
-    my ($word, $line, $pos) = @_;
-    $word ||= "";
-
-    grep /^$word/i, @words;
-};
+initialize_completion($term);
 
 my $watcher;
 $term->event_loop(
@@ -72,9 +52,9 @@ $term->event_loop(
                   }
                  );
 
-my $x = $term->readline('> ');
+my $input = $term->readline('> ');
 
 # clean up by removing the watcher.
 $loop->remove($watcher);
 
-print STDOUT "Got: [$x] in $t s\n";
+print_input($input);
