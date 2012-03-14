@@ -75,6 +75,6 @@ $term->event_loop(
 my $x = $term->readline('> ');
 
 # clean up by removing the watcher.
-$watcher->want_readready(0);
+$loop->remove($watcher);
 
 print STDOUT "Got: [$x] in $t s\n";
