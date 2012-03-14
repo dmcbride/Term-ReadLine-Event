@@ -1,8 +1,10 @@
 Build.PL
 Changes
 ex/AnyEvent.pl
+ex/Coro.pl
 ex/IO-Async.pl
 ex/IO-Poll.pl
+ex/lib/ExampleHelpers.pm
 ex/POE.pl
 ex/Reflex.pl
 ex/select.pl
@@ -14,3 +16,6 @@ t/00-load.t
 t/manifest.t
 t/pod-coverage.t
 t/pod.t
+Makefile.PL
+META.yml
+META.json

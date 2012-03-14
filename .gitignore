@@ -1,0 +1,9 @@
+*.bak
+Build
+blib/*
+_build
+MYMETA.*
+META.*
+Makefile*
+*~
+Term-ReadLine-Event-*
