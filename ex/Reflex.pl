@@ -64,4 +64,27 @@ my $ticker = Reflex::Interval->new(
 
 my $input = $term->readline('> ');
 print_input($input);
+
+# Unhook Term::ReadLine from Reflex.  The Reflex::Filehandle object
+# associated with Term::ReadLine will stop watching for input and be
+# destroyed.  This isn't usually needed, but it has its uses.
+#
+# Unhooking Term::ReadLine may reduce memory usage slightly by
+# destroying the associated Reflex::Filehandle object.  This also
+# turns off the terminal's input watcher in the underlying event loop,
+# which may improve runtime performance slightly.  These benefits are
+# moot if the program is about to exit anyway.
+#
+# Turning off the terminal's Reflex::Filehandle may be necessary for
+# some of the event loops Reflex supports, even if the program is
+# about to exit.  Rumor has it that some event loops may not exit
+# cleanly unless their I/O watchers are first turned off.
+#
+# This is a one-time deal.  There is no going back.  This is because
+# Term::ReadLine cannot currently create more than one object per run.
+# Not concurrently (two or more active at once).  Not serially (create
+# a new one after the previous one is DESTROYed).
+
+$term->event_loop(undef);
+
 exit;
