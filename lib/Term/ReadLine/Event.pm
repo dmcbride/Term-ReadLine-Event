@@ -100,12 +100,14 @@ L<http://search.cpan.org/dist/Term-ReadLine-Event/>
 
 =item Paul "LeoNerd" Evans <leonerd@leonerd.org.uk>
 
-For all the examples.
+For all the examples except POE and Reflex.
 
-=item dngor (#p5p)
+=item Rocco Caputo <rcaputo@cpan.org>
 
 For a final patch to Term::ReadLine that helps reduce the number
 of variables that get closed upon.
+
+For the POE and Reflex examples.
 
 =back
 

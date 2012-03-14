@@ -3,6 +3,8 @@ Changes
 ex/AnyEvent.pl
 ex/IO-Async.pl
 ex/IO-Poll.pl
+ex/POE.pl
+ex/Reflex.pl
 ex/select.pl
 ignore.txt
 lib/Term/ReadLine/Event.pm
