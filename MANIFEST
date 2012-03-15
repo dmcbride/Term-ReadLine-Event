@@ -5,6 +5,7 @@ ex/Coro.pl
 ex/IO-Async.pl
 ex/IO-Poll.pl
 ex/lib/ExampleHelpers.pm
+ex/LICENSE
 ex/POE.pl
 ex/Reflex.pl
 ex/select.pl
