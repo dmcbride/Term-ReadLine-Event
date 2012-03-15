@@ -387,7 +387,7 @@ For the POE and Reflex examples, and a push to modularise the examples.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2012 Darin McBride.
+Copyright 2012 Darin McBride and others.
 
 This program is free software; you can redistribute it and/or modify it
 under the terms of either: the GNU General Public License as published
