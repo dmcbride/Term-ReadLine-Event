@@ -282,10 +282,13 @@ to clean up after oneself.
 sub DESTROY
 {
     my $self = shift;
-    $self->trl->event_loop(undef);
 
     local $@;
-    eval { $self->{_cleanup}->($self) } if $self->{_cleanup};
+    eval {
+        $self->trl->event_loop(undef);
+
+        $self->{_cleanup}->($self) if $self->{_cleanup};
+    };
 }
 
 =head2 trl

@@ -19,6 +19,7 @@ README
 t/00-load.t
 t/10-AnyEvent.t
 t/10-Coro.t
+t/10-IO-Async.t
 t/10-Reflex.t
 t/manifest.t
 t/pod-coverage.t
