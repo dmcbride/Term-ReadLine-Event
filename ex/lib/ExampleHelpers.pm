@@ -22,7 +22,7 @@ my $t = 0;
 
 sub update_time {
     ++$t;
-    print STDERR "${CSI}s${CSI}1H$t s ${CSI}u";
+    print STDERR "\x1b7${CSI}1H$t s \x1b8";
 }
 
 # Helper to print input with the elapsed time it took to receive the
