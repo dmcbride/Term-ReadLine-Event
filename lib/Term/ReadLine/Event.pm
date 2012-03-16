@@ -235,6 +235,7 @@ sub with_POE
       },
     },
   );
+    $self;
 }
 
 =head2 with_Reflex
