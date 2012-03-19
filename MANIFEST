@@ -22,6 +22,7 @@ t/10-Coro.t
 t/10-IO-Async.t
 t/10-POE.t
 t/10-Reflex.t
+t/20-POE_and_AE.t
 t/manifest.t
 t/pod-coverage.t
 t/pod.t

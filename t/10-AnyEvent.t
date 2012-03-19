@@ -9,7 +9,9 @@ use Test::More;
 use Term::ReadLine 1.09;
 use Term::ReadLine::Event;
 
-plan skip_all => "AnyEvent is not installed" unless eval "use AnyEvent; 1";
+BEGIN {
+    plan skip_all => "AnyEvent is not installed" unless eval "use AnyEvent; 1";
+}
 plan tests => 2;
 
 my $term = Term::ReadLine::Event->with_AnyEvent('test');
