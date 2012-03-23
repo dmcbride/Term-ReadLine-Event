@@ -6,18 +6,7 @@ use warnings;
 
 use Term::ReadLine 1.09;
 
-=head1 NAME
-
-Term::ReadLine::Event - Wrappers for Term::ReadLine's new event_loop model.
-
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
-our $VERSION = '0.01';
-
+# ABSTRACT: Wrappers for Term::ReadLine's new event_loop model.
 
 =head1 SYNOPSIS
 
@@ -33,6 +22,62 @@ as a small change to your code rather than the longer code required.
 
 This may actually be sufficient for your use, or it may not.  This likely
 depends on the loop being used.
+
+=head1 HISTORY
+
+This project started with a goal: to get L<Term::ReadLine> working under
+Coro.  Since Coro used AnyEvent, I thought that getting L<Term::ReadLine>
+to use AnyEvent instead of Tk directly would be a win.  Conversations
+ensued, and it sounded like P5P generally liked the idea, but didn't want
+anything AnyEvent-specific when it could be more generic than that.
+
+Through a couple of iterations, the event_loop interface was born.  However,
+since this was no longer as simple as the old Tk interface (C<$term-E<gt>tkRunning(1)>),
+I thought it would need some examples.  Putting examples into the perl core
+seemed a bit strange, partly due to the extra overhead involved in updating
+them, so having a distribution on CPAN full of examples seemed to make sense.
+When looking for information on a module, my first place to look is CPAN,
+so that made sense to me.
+
+I then got some examples from other event loop developers (Paul "LeoNerd"
+Evans and Rocco Caputo), and added them to my AnyEvent and Coro examples,
+and that was the first release.  If others submit further examples, I will
+add them and maybe this will grow.  Even if it doesn't, as long as it helps
+people integrate Term::ReadLine into their event-loop-based apps, whether that's
+Reflex or POE or AnyEvent or Coro or even using select loops to just do some
+background processing, then it will have met its goal.
+
+Having compiled a list of examples, I then realised that most of the examples
+could be abstracted into a module.  Again, directly into Term::ReadLine
+would be too specific for P5P, but just perfect for a distribution.  If you
+choose to install this distribution instead of just swiping the example that
+suits you, you can integrate with an event loop in a single line (for L<POE>,
+that's significant savings, for L<Coro>, not so much).
+
+Note that the examples are more complete than the test files as well. This is
+largely because testing full readline functionality in an automated fashion is
+not entirely trivial.  The hope would be that anyone making changes to
+Term::ReadLine in the future be able to use these examples in their own
+testing to ensure they don't break anything.  (If you do, be sure you're
+testing with L<Term::ReadLine::Gnu> and L<Term::ReadLine::Perl>, testing
+with just L<Term::ReadLine::Stub> will miss things.)
+
+Hopefully, this makes it trivial enough to use event loops with T::RL
+such that anyone can do it.  You can get back to focusing on your
+business logic instead of arcane rituals to get event loops integrated
+with Term::ReadLine.  And hopefully that means we get more perl apps
+that have nice interfaces (with readline support), even when doing
+other things in the background (events).
+
+It is not my intention to provide wrappers for all event loops.  It is
+my intention only to provide examples for as many loops as possible. 
+The wrappers are intended to be examples as well (though covered under
+Artistic/GPL licensing whereas the examples themselves are more
+permissive), and not necessarily used as-is, partially due to their
+size (all the wrappers are in a single module).  That being said, I
+would likely just use the wrapper because I'm too lazy to copy the
+examples into my code.  If I were entirely concerned about RAM usage,
+I'd be writing in C.
 
 =head1 METHODS
 
@@ -56,7 +101,7 @@ AnyEvent; if you're using with_POE, you have already loaded POE, etc.
 
 =head2 with_AnyEvent
 
-Creates a L<Term::ReadLine> object and sets it up for use with AnyEvent.
+Creates a L<Term::ReadLine> object and sets it up for use with L<AnyEvent>.
 
 =cut
 
@@ -97,12 +142,13 @@ sub with_AnyEvent {
 
 =head2 with_Coro
 
-Creates a L<Term::ReadLine> object and sets it up for use with Coro.
+Creates a L<Term::ReadLine> object and sets it up for use with L<Coro>.
 
 =cut
 
 sub with_Coro {
     my $self = _new(@_);
+    require Coro::Handle;
 
     $self->trl->event_loop(
                            sub {
@@ -112,7 +158,8 @@ sub with_Coro {
                            }, sub {
                                # in Coro, we just need to unblock the filehandle,
                                # and save the unblocked filehandle.
-                               unblock $_[0];
+                               my $fh = shift;
+                               Coro::Handle::unblock $fh;
                            }
                           );
     $self;
@@ -120,7 +167,7 @@ sub with_Coro {
 
 =head2 with_IO_Async
 
-Creates a L<Term::ReadLine> object and sets it up for use with IO::Async.
+Creates a L<Term::ReadLine> object and sets it up for use with L<IO::Async>.
 
 Parameters:
 
@@ -171,7 +218,7 @@ sub with_IO_Async {
 
 =head2 with_POE
 
-Creates a L<Term::ReadLine> object and sets it up for use with POE.
+Creates a L<Term::ReadLine> object and sets it up for use with L<POE>.
 
 =cut
 
@@ -240,7 +287,7 @@ sub with_POE
 
 =head2 with_Reflex
 
-Creates a L<Term::ReadLine> object and sets it up for use with Reflex.
+Creates a L<Term::ReadLine> object and sets it up for use with L<Reflex>.
 
 =cut
 
@@ -296,7 +343,9 @@ sub DESTROY
 
 Access to the Term::ReadLine object itself.  Since Term::ReadLine::Event
 is not a Term::ReadLine, but HAS a Term::ReadLine, this gives access to
-the underlying object in case something isn't exposed sufficiently.
+the underlying object in case something isn't exposed sufficiently.  If
+you find yourself needing this, please contact me with your use case.  And,
+preferably, a patch :-)
 
 =cut
 
@@ -309,7 +358,7 @@ sub trl
 =head2 readline
 
 Wrapper for Term::ReadLine's readline.  Makes it convenient to just
-call C<$term->readline(...)>.
+call C<$term-E<gt>readline(...)>.
 
 =cut
 
@@ -322,7 +371,7 @@ sub readline
 =head2 Attribs
 
 Wrapper for Term::ReadLine's Attribs.  Makes it convenient to just
-call C<$term->Attribs(...)>.
+call C<$term-E<gt>Attribs(...)>.
 
 =cut
 
@@ -330,6 +379,19 @@ sub Attribs
 {
     my $self = shift;
     $self->trl->Attribs(@_);
+}
+
+=head2 addhistory
+
+Wrapper for Term::ReadLine's addhistory.  Makes it convenient to just
+call C<$term-E<gt>addhistory(...)>.
+
+=cut
+
+sub addhistory
+{
+    my $self = shift;
+    $self->trl->addhistory(@_);
 }
 
 =head1 AUTHOR
@@ -387,18 +449,11 @@ of variables that get closed upon making much of this easier to handle.
 
 For the POE and Reflex examples, and a push to modularise the examples.
 
+=item P5P
+
+For genericising my initial AnyEvent patch idea.
+
 =back
-
-=head1 LICENSE AND COPYRIGHT
-
-Copyright 2012 Darin McBride and others.
-
-This program is free software; you can redistribute it and/or modify it
-under the terms of either: the GNU General Public License as published
-by the Free Software Foundation; or the Artistic License.
-
-See http://dev.perl.org/licenses/ for more information.
-
 
 =cut
 

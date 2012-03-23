@@ -10,10 +10,11 @@ use Term::ReadLine::Event;
 
 BEGIN { $^W = 0 } # common::sense does funny things, we don't need to hear about it.
 
-plan skip_all => "Coro is not installed" unless eval "use Coro; 1";
-plan skip_all => "AnyEvent is not installed" unless eval "use AnyEvent; 1";
+BEGIN {
+    plan skip_all => "Coro is not installed" unless eval "use Coro; use Coro::AnyEvent; 1";
+    plan skip_all => "AnyEvent is not installed" unless eval "use AnyEvent; 1";
+}
 plan tests => 1;
-require Coro::AnyEvent;
 
 my $term = Term::ReadLine::Event->with_Coro('test');
 
