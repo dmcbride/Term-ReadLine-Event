@@ -5,6 +5,7 @@ use strict;
 use warnings;
 
 use Term::ReadLine 1.09;
+use Scalar::Util qw(blessed);
 
 # ABSTRACT: Wrappers for Term::ReadLine's new event_loop model.
 
@@ -16,7 +17,7 @@ as a small change to your code rather than the longer code required.
     use AnyEvent;
     use Term::ReadLine::Event;
 
-    my $term = Term::ReadLine::Event->with_AnyEvent();
+    my $term = Term::ReadLine::Event->with_AnyEvent('...');
 
     my $input = $term->readline('Prompt >');
 
@@ -81,23 +82,46 @@ I'd be writing in C.
 
 =head1 METHODS
 
-All constructors (C<with_>*) take as their first parameter the name 
-of the application, which gets passed in to Term::ReadLine's constructor.
+All constructors (C<with_>*) take as their first parameter one of:
 
-If you need to use more parameters to Term::ReadLine's constructor, such
-as specifying the input and output filehandles, then pass all of the
-parameters for Term::ReadLine in as an anonymous array ref:
+=over 4
 
-   Term::ReadLine::Event->with_Foo(['myapp', \*STDIN, \*STDOUT]);
+=item *
+
+The name of the application, which gets passed in to Term::ReadLine's
+constructor.
+
+    my $term = Term::ReadLine::Event->with_Foo('myapp');
+
+=item *
+
+An array ref consisting of the name of the application, and the input
+and output filehandles.  This is useful if you need to override
+these filehandles.
+
+    my $term = Term::ReadLine::Event->with_Foo(['myapp', \*STDIN, \*STDOUT]);
+
+=item *
+
+A pre-constructed Term::ReadLine object.  This is useful if you need
+to do other things with the Term::ReadLine object prior to setting up
+the event loop, or if you have a custom package derived from Term::ReadLine
+and you do not want Term::ReadLine::Event to create the default type.
+
+    my $term = Term::ReadLine::Special->new('myapp', other => 'stuff');
+    $term = Term::ReadLine::Event->with_Foo($term);
+
+=back
 
 Paramters for setting up the event loop, if any are required, will be
-after the application name or array ref as named parameters, e.g.:
+after this first parameter as named parameters, e.g.:
 
    Term::ReadLine::Event->with_IO_Async('myapp', loop => $loop);
 
 All constructors also assume that the required module(s) is(are) already
 loaded.  That is, if you're using with_AnyEvent, you have already loaded
-AnyEvent; if you're using with_POE, you have already loaded POE, etc.
+AnyEvent (and thus the event loop it is using); if you're using with_POE,
+you have already loaded POE, etc.
 
 =head2 with_AnyEvent
 
@@ -111,7 +135,8 @@ sub _new {
 
     my $self = bless {@_}, $class;
 
-    $self->{_term} = Term::ReadLine->new(ref $app ? @$app : $app);
+    $self->{_term} = blessed $app ? $app :
+       Term::ReadLine->new(ref $app ? @$app : $app);
     $self;
 }
 
