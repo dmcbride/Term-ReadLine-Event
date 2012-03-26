@@ -3,6 +3,9 @@ Revision history for Term-ReadLine-Event
 0.01    March 26, 2012
         * From initial concept to first release.
 
-0.02	March 26, 2012
-		* CPAN didn't like the ex directory, hopefully this fixes it.
+0.02    March 26, 2012
+        * CPAN didn't like the ex directory, hopefully this fixes it.
 
+0.03
+        + Add Tk example in the hopes T::RL eventually deprecates its Tk
+          interface in favour of this interface.
