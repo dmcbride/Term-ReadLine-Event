@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Term::ReadLine;
+use Term::ReadLine 1.09;
 
 use File::Basename;
 use lib dirname($0) . '/lib';

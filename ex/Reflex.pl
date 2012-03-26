@@ -4,7 +4,7 @@
 use strict;
 use warnings;
 
-use Term::ReadLine;
+use Term::ReadLine 1.09;
 use Reflex 0.097; # bug in 0.096 that keeps this from working.
 use Reflex::Filehandle;
 use Reflex::Interval;

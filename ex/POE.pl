@@ -12,6 +12,7 @@ use lib dirname($0) . '/lib';
 use ExampleHelpers qw(
   initialize_completion update_time print_input
 );
+use Term::ReadLine 1.09;
 
 # Mark time with a single-purpose POE session.
 #
