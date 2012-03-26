@@ -11,9 +11,6 @@ use Scalar::Util qw(blessed);
 
 =head1 SYNOPSIS
 
-Provides many of the event loop interactions shown in the examples
-as a small change to your code rather than the longer code required.
-
     use AnyEvent;
     use Term::ReadLine::Event;
 
@@ -21,16 +18,23 @@ as a small change to your code rather than the longer code required.
 
     my $input = $term->readline('Prompt >');
 
+=head1 DESCRIPTION
+
+Provides many of the event loop interactions shown in the examples
+provided as a small change to your code rather than the longer code
+required.
+
 This may actually be sufficient for your use, or it may not.  This likely
 depends on the loop being used.
 
 =head1 HISTORY
 
 This project started with a goal: to get L<Term::ReadLine> working under
-Coro.  Since Coro used AnyEvent, I thought that getting L<Term::ReadLine>
-to use AnyEvent instead of Tk directly would be a win.  Conversations
-ensued, and it sounded like P5P generally liked the idea, but didn't want
-anything AnyEvent-specific when it could be more generic than that.
+L<Coro>.  Since L<Coro> used L<AnyEvent>, I thought that getting
+L<Term::ReadLine> to use AnyEvent instead of Tk directly would be a win.
+Conversations ensued, and it sounded like P5P generally liked the idea, but
+didn't want anything AnyEvent-specific when it could be more generic than
+that.
 
 Through a couple of iterations, the event_loop interface was born.  However,
 since this was no longer as simple as the old Tk interface (C<$term-E<gt>tkRunning(1)>),
