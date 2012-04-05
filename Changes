@@ -9,3 +9,4 @@ Revision history for Term-ReadLine-Event
 0.03
         + Add Tk example in the hopes T::RL eventually deprecates its Tk
           interface in favour of this interface.
+        + Add with_Tk method for much the same reason.

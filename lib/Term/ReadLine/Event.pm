@@ -343,6 +343,40 @@ sub with_Reflex
     $self;
 }
 
+=head2 with_Tk
+
+Creates a L<Term::ReadLine> object and sets it up for use with L<Tk>.
+
+=cut
+
+sub with_Tk
+{
+    my $self = _new(@_);
+
+    $self->trl->event_loop(
+                           sub {
+                               my $data = shift;
+                               Tk::DoOneEvent(0) until $$data;
+                               $$data = 0;
+                           },
+                           sub {
+                               # save filehandle for unhooking later.
+                               $self->{tkFH} = shift;
+                               my $data;
+                               $$data = 0;
+                               Tk->fileevent($self->{tkFH}, 'readable', sub { $$data = 1 });
+                               $data;
+                           },
+                          );
+
+    $self->{_cleanup} = sub {
+        my $s = shift;
+        Tk->fileevent($s->{tkFH}, 'readable', "");
+    };
+
+    $self;
+}
+
 =head2 DESTROY
 
 During destruction, we attempt to clean up.  Note that L<Term::ReadLine>
