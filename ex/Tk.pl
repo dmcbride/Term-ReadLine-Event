@@ -22,6 +22,7 @@ my $term = Term::ReadLine->new('...');
 initialize_completion($term);
 
 # set up the event loop callbacks.
+my $fh; # so we can save it to unhook later.
 $term->event_loop(
                   sub {
                       my $data = shift;
@@ -29,7 +30,7 @@ $term->event_loop(
                       $$data = 0;
                   },
                   sub {
-                      my $fh = shift;
+                      $fh = shift;
                       my $data;
                       $$data = 0;
                       Tk->fileevent($fh, 'readable', sub { $$data = 1 });
@@ -46,7 +47,7 @@ my $input = $term->readline('> ');
 # seems to imply that not cleaning up may cause crashes, for example.
 $term->event_loop(undef);
 
-# No further cleanup required other than letting $data->[1] go out of scope
-# and thus deregister.
+# unhook our fileevent:
+Tk->fileevent($fh, 'readable', "");
 
 print_input($input);
