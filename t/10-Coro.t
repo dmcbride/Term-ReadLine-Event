@@ -1,6 +1,7 @@
 use Test::More;
 
 BEGIN { $ENV{PERL_RL} = 'Stub o=0'; }
+BEGIN { $^W = 0 } # common::sense does funny things, we don't need to hear about it.
 
 use strict;
 use warnings;
@@ -8,11 +9,9 @@ use warnings;
 use Term::ReadLine 1.09;
 use Term::ReadLine::Event;
 
-BEGIN { $^W = 0 } # common::sense does funny things, we don't need to hear about it.
-
 BEGIN {
-    plan skip_all => "Coro is not installed" unless eval "use Coro; use Coro::AnyEvent; 1";
     plan skip_all => "AnyEvent is not installed" unless eval "use AnyEvent; 1";
+    plan skip_all => "Coro is not installed" unless eval "use Coro; use Coro::AnyEvent; 1";
 }
 plan tests => 1;
 
