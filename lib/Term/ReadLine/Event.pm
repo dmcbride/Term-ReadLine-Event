@@ -117,7 +117,7 @@ and you do not want Term::ReadLine::Event to create the default type.
 
 =back
 
-Paramters for setting up the event loop, if any are required, will be
+Parameters for setting up the event loop, if any are required, will be
 after this first parameter as named parameters, e.g.:
 
    Term::ReadLine::Event->with_IO_Async('myapp', loop => $loop);
@@ -126,10 +126,6 @@ All constructors also assume that the required module(s) is(are) already
 loaded.  That is, if you're using with_AnyEvent, you have already loaded
 AnyEvent (and thus the event loop it is using); if you're using with_POE,
 you have already loaded POE, etc.
-
-=head2 with_AnyEvent
-
-Creates a L<Term::ReadLine> object and sets it up for use with L<AnyEvent>.
 
 =cut
 
@@ -143,6 +139,12 @@ sub _new {
        Term::ReadLine->new(ref $app ? @$app : $app);
     $self;
 }
+
+=head2 with_AnyEvent
+
+Creates a L<Term::ReadLine> object and sets it up for use with L<AnyEvent>.
+
+=cut
 
 sub with_AnyEvent {
     my $self = _new(@_);
