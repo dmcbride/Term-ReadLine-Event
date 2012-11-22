@@ -39,7 +39,10 @@ $term->event_loop(
                       # is used as input to the previous callback.
 
                       # We return the fileno that we will use later.
-                      shift->fileno;
+
+                      # cygwin/TRL::Gnu seems to use some other object here
+                      # that doesn't respond to a fileno method call (rt#81344)
+                      fileno($_[0]);
                   }
                  );
 

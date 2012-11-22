@@ -3,6 +3,8 @@ Revision history for Term-ReadLine-Event
 {{$NEXT}}
         * Some testers' :0 don't seem to work, so detect that and skip
           instead of fail Tk tests.
+        * RT#81344 - Cygwin/TRL::Gnu doesn't return an object that responds
+          to 'fileno' method, breaking ex/select.pl (Chris Marshall)
 
 0.03    April 5, 2012
         + Add Tk example in the hopes T::RL eventually deprecates its Tk
