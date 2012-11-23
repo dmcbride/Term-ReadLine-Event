@@ -231,9 +231,9 @@ sub with_IO_Async {
                                $self->{loop}->add(
                                                   $self->{watcher} =
                                                   IO::Async::Handle->new(
-                                                                                    read_handle => $fh,
-                                                                                    on_read_ready => sub { $$ready = 1 },
-                                                                                   )
+                                                                         read_handle => $fh,
+                                                                         on_read_ready => sub { $$ready = 1 },
+                                                                        )
                                                  );
                                $ready;
                            }
@@ -408,9 +408,9 @@ sub DESTROY
 
 Access to the Term::ReadLine object itself.  Since Term::ReadLine::Event
 is not a Term::ReadLine, but HAS a Term::ReadLine, this gives access to
-the underlying object in case something isn't exposed sufficiently.  If
-you find yourself needing this, please contact me with your use case.  And,
-preferably, a patch :-)
+the underlying object in case something isn't exposed sufficiently.  This
+should not be an issue since T::RL::E automatically maps any call it doesn't
+recognise directly on to the underlying T::RL.
 
 =cut
 
@@ -420,43 +420,17 @@ sub trl
     $self->{_term};
 }
 
-=head2 readline
-
-Wrapper for Term::ReadLine's readline.  Makes it convenient to just
-call C<$term-E<gt>readline(...)>.
-
-=cut
-
-sub readline
+our $AUTOLOAD;
+sub AUTOLOAD
 {
-    my $self = shift;
-    $self->trl->readline(@_);
-}
+    (my $f = $AUTOLOAD) =~ s/.*:://;
 
-=head2 Attribs
+    no strict 'refs';
+    *{$f} = sub {
+        shift->trl()->$f(@_);
+    };
 
-Wrapper for Term::ReadLine's Attribs.  Makes it convenient to just
-call C<$term-E<gt>Attribs(...)>.
-
-=cut
-
-sub Attribs
-{
-    my $self = shift;
-    $self->trl->Attribs(@_);
-}
-
-=head2 addhistory
-
-Wrapper for Term::ReadLine's addhistory.  Makes it convenient to just
-call C<$term-E<gt>addhistory(...)>.
-
-=cut
-
-sub addhistory
-{
-    my $self = shift;
-    $self->trl->addhistory(@_);
+    goto &$f;
 }
 
 =head1 AUTHOR

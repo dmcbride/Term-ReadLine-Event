@@ -20,7 +20,7 @@ isa_ok($term->trl, 'Term::ReadLine::Stub');
 my $w = AE::timer(0.1,0,
                   sub {
                       pass;
-                      print {$term->trl()->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
+                      print {$term->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
                       exit 0 
                   });
 

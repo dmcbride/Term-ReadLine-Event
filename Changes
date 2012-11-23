@@ -5,6 +5,8 @@ Revision history for Term-ReadLine-Event
           instead of fail Tk tests.
         * RT#81344 - Cygwin/TRL::Gnu doesn't return an object that responds
           to 'fileno' method, breaking ex/select.pl (Chris Marshall)
+        + Add AUTOLOAD to automatically map all unknown calls directly
+          to the underlying T::RL object.
 
 0.03    April 5, 2012
         + Add Tk example in the hopes T::RL eventually deprecates its Tk

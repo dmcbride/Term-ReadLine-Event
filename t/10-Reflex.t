@@ -22,7 +22,7 @@ my $ticker = Reflex::Interval->new(
                                    interval => 1,
                                    on_tick  => sub {
                                        pass;
-                                       print {$term->trl()->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
+                                       print {$term->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
                                        exit 0 
                                    },
                                   );

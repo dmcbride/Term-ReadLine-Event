@@ -25,7 +25,7 @@ POE::Session->create(
                          },
                          tick => sub {
                              pass;
-                             print {$term->trl()->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
+                             print {$term->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
                              exit 0 
                          },
                      },

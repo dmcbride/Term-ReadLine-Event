@@ -26,7 +26,7 @@ isa_ok($term->trl, 'Term::ReadLine::Stub');
 
 my $w = sub {
     pass;
-    print {$term->trl()->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
+    print {$term->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
     exit 0;
 };
 Tk::after($mw, 1000, $w);

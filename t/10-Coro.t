@@ -19,7 +19,7 @@ my $term = Term::ReadLine::Event->with_Coro('test');
 
 Coro::async {
     Coro::AnyEvent::sleep(0.1);
-    print {$term->trl()->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
+    print {$term->OUT()} $Term::ReadLine::Stub::rl_term_set[3];
     pass();
     exit 0
 };
