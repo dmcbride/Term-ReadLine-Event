@@ -7,6 +7,8 @@ Revision history for Term-ReadLine-Event
           to 'fileno' method, breaking ex/select.pl (Chris Marshall)
         + Add AUTOLOAD to automatically map all unknown calls directly
           to the underlying T::RL object.
+        * Some testing with Coro::AnyEvent failed, but I don't know what
+          version, so start diag'ing versions of everything we load.
 
 0.03    April 5, 2012
         + Add Tk example in the hopes T::RL eventually deprecates its Tk

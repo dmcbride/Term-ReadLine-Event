@@ -14,6 +14,8 @@ BEGIN {
     plan skip_all => "AnyEvent is not installed" unless eval "use AnyEvent; 1";
 }
 plan tests => 2;
+diag( "Testing Term::ReadLine::Event: POE version $POE::VERSION" );
+diag( "Testing Term::ReadLine::Event: AnyEvent version $AnyEvent::VERSION" );
 
 # silence warning.
 POE::Kernel->run();

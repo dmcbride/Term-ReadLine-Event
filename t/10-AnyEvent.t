@@ -13,6 +13,7 @@ BEGIN {
     plan skip_all => "AnyEvent is not installed" unless eval "use AnyEvent; 1";
 }
 plan tests => 2;
+diag( "Testing Term::ReadLine::Event: AnyEvent version $AnyEvent::VERSION" );
 
 my $term = Term::ReadLine::Event->with_AnyEvent('test');
 isa_ok($term->trl, 'Term::ReadLine::Stub');

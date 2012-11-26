@@ -14,6 +14,8 @@ BEGIN {
     plan skip_all => "Coro is not installed" unless eval "use Coro; use Coro::AnyEvent; 1";
 }
 plan tests => 1;
+diag( "Testing Term::ReadLine::Event: AnyEvent version $AnyEvent::VERSION" );
+diag( "Testing Term::ReadLine::Event: Coro version $Coro::VERSION" );
 
 my $term = Term::ReadLine::Event->with_Coro('test');
 

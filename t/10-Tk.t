@@ -20,6 +20,7 @@ plan skip_all => "Tk can't initialise: $@" unless eval {
 };
 
 plan tests => 2;
+diag( "Testing Term::ReadLine::Event: Tk version $Tk::VERSION" );
 
 my $term = Term::ReadLine::Event->with_Tk('test');
 isa_ok($term->trl, 'Term::ReadLine::Stub');
