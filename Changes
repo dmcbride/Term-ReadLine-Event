@@ -1,6 +1,8 @@
 Revision history for Term-ReadLine-Event
 
 {{$NEXT}}
+
+0.04    2012-12-30
         * Some testers' :0 don't seem to work, so detect that and skip
           instead of fail Tk tests.
         * RT#81344 - Cygwin/TRL::Gnu doesn't return an object that responds
