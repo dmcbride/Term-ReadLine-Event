@@ -228,6 +228,16 @@ sub with_IO_Async {
                                # ensure we're referring to the same value, this is
                                # a SCALAR ref.
                                my $ready = \ do{my $dummy};
+
+                               # Term::ReadLine::Gnu::XS relies on the fh being
+                               # able to do fileno.
+                               unless($fh->can('fileno')) {
+                                   require IO::Handle;
+                                   my $h = IO::Handle->new;
+                                   $h->fdopen($fh, 'r') or die "could not fdopen - $!";
+                                   $fh = $h
+                               }
+
                                $self->{loop}->add(
                                                   $self->{watcher} =
                                                   IO::Async::Handle->new(
